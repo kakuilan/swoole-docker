@@ -1,12 +1,12 @@
 FROM centos:centos7
 
-MAINTAINER kakuilan
+MAINTAINER kakuilan kakuilan@163.com
 
 # dir and version
 ENV SRC_DIR /usr/local/src
 ENV WWW_DIR /var/www
 ENV WWW_USER www
-ENV MEMORY_LIMIT 256
+ENV MEMORY_LIMIT 512
 
 ENV RE2C_VER 1.1.1
 ENV LIBICONV_VER 1.15
@@ -14,6 +14,7 @@ ENV HIREDIS_VER 0.14.0
 
 ENV PHP_VER 7.2.13
 ENV PHP_DIR /usr/local/php/${PHP_VER}
+ENV PHP_LOG_DIR /var/log/php
 ENV PHP_ETC_DIR ${PHP_DIR}/etc
 ENV PHP_INI_DIR ${PHP_ETC_DIR}/php.d
 
@@ -87,8 +88,9 @@ RUN yum -y install \
   && yum clean all
 
 # copy files
-RUN mkdir -p ${SRC_DIR}
+RUN mkdir -p ${SRC_DIR} ${PHP_LOG_DIR}
 COPY conf pack ${SRC_DIR}/
+RUN chmod +rw -R ${PHP_LOG_DIR}
 
 # go src dir
 WORKDIR ${SRC_DIR}
@@ -204,14 +206,14 @@ RUN tar xzf php-${PHP_VER}.tar.gz \
   && make ZEND_EXTRA_LIBS='-liconv' \
   && make install
 
-# bin and conf
+# php path and conf
 RUN sed -i "s@^export PATH=\(.*\)@export PATH=${PHP_DIR}/bin:\1@" /etc/profile
 RUN . /etc/profile
 RUN mkdir -p ${PHP_DIR}/etc/php.d
 RUN /bin/cp ${SRC_DIR}/php-${PHP_VER}/php.ini-production ${PHP_DIR}/etc/php.ini
 
 # modify php.ini
-RUN sed -i "s@^memory_limit.*@memory_limit = ${MEMORY_LIMIT}@" ${PHP_DIR}/etc/php.ini
+RUN sed -i "s@^memory_limit.*@memory_limit = ${MEMORY_LIMIT}M@" ${PHP_DIR}/etc/php.ini
 RUN sed -i 's@^output_buffering =@output_buffering = On\noutput_buffering =@' ${PHP_DIR}/etc/php.ini
 RUN sed -i 's@^;cgi.fix_pathinfo.*@cgi.fix_pathinfo=0@' ${PHP_DIR}/etc/php.ini
 RUN sed -i 's@^short_open_tag = Off@short_open_tag = On@' ${PHP_DIR}/etc/php.ini
@@ -228,13 +230,11 @@ RUN sed -i "s@^;curl.cainfo.*@curl.cainfo = ${OPENSSL_DIR}/cert.pem@" ${PHP_DIR}
 RUN sed -i "s@^;openssl.cafile.*@openssl.cafile = ${OPENSSL_DIR}/cert.pem@" ${PHP_DIR}/etc/php.ini
 RUN sed -i "s@^error_reporting =.*@error_reporting = E_ALL@" ${PHP_DIR}/etc/php.ini
 RUN sed -i "s@^log_errors =.*@log_errors = On@" ${PHP_DIR}/etc/php.ini
-RUN sed -i "s@^;error_log = php_errors.log.*@error_log = log/php_errors.log@" ${PHP_DIR}/etc/php.ini
+RUN sed -i "s@^;error_log = php_errors.log.*@error_log = ${PHP_LOG_DIR}/php_errors.log@" ${PHP_DIR}/etc/php.ini
 
-# php-fpm Init Script
-RUN /bin/cp ${SRC_DIR}/php-${PHP_VER}/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm \
-  && chmod +x /etc/init.d/php-fpm \
-  && { chkconfig --add php-fpm; chkconfig php-fpm on; }
+# php-fpm conf
 RUN /bin/cp php-fpm.conf ${PHP_DIR}/etc/php-fpm.conf
+RUN sed -i "s@^error_log =*@error_log = ${PHP_LOG_DIR}/php-fpm.log@" ${PHP_DIR}/etc/php-fpm.conf
 RUN sed -i "s@^listen.owner.*@listen.owner = ${WWW_USER}@" ${PHP_DIR}/etc/php-fpm.conf
 RUN sed -i "s@^listen.group.*@listen.group = ${WWW_USER}@" ${PHP_DIR}/etc/php-fpm.conf
 RUN sed -i "s@^user =.*@user = ${WWW_USER}@" ${PHP_DIR}/etc/php-fpm.conf
@@ -340,8 +340,6 @@ RUN package-cleanup --quiet --leaves --exclude-bin | xargs yum remove -y
 RUN rm -rf ${SRC_DIR}/* 
 RUN history -c && history -w
 
-#RUN service php-fpm start \
-
 # www work dir
 RUN mkdir -p ${WWW_DIR}
 WORKDIR ${WWW_DIR}
@@ -353,4 +351,5 @@ VOLUME ${PHP_DIR}/var
 ENV PATH "$PATH:${PHP_DIR}/bin"
 RUN echo $PATH
 
-CMD ["${PHP_DIR}/bin/php"]
+USER ${WWW_USER}
+#CMD ${PHP_DIR}/sbin/php-fpm --daemonize --fpm-config ${PHP_ETC_DIR}/php-fpm.conf --pid ${PHP_DIR}/var/run/php-fpm.pid
