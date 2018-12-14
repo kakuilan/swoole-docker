@@ -351,5 +351,4 @@ VOLUME ${PHP_DIR}/var
 ENV PATH "$PATH:${PHP_DIR}/bin"
 RUN echo $PATH
 
-USER ${WWW_USER}
 #CMD ${PHP_DIR}/sbin/php-fpm --daemonize --fpm-config ${PHP_ETC_DIR}/php-fpm.conf --pid ${PHP_DIR}/var/run/php-fpm.pid
