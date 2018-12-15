@@ -13,7 +13,7 @@ ENV LIBICONV_VER 1.15
 ENV HIREDIS_VER 0.14.0
 
 ENV PHP_VER 7.2.13
-ENV PHP_DIR /usr/local/php/${PHP_VER}
+ENV PHP_DIR /usr/local/php
 ENV PHP_LOG_DIR /var/log/php
 ENV PHP_ETC_DIR ${PHP_DIR}/etc
 ENV PHP_INI_DIR ${PHP_ETC_DIR}/php.d
@@ -23,15 +23,13 @@ ENV PHPDS_VER 1.2.7
 ENV PHPMCRYPT_VER 1.0.1
 ENV PHPREDIS_VER 4.2.0
 ENV PHPIMAGICK_VER 3.4.3
-ENV PHPXHPROF_VER 2.0.5
 ENV PHPINOTIFY_VER 2.0.0
 
-# update yum repo
-RUN yum install -y epel-release
-RUN yum repolist
 
 # tools
-RUN yum -y install \
+RUN yum install -y \
+	epel-release \
+	net-tools \
 	wget \
 	gcc \
 	gcc-c++ \
@@ -47,39 +45,23 @@ RUN yum -y install \
 	gmp-devel \
 	libargon2 \
 	libargon2-devel \
-	libXpm \
 	libXpm-devel \
-	libcurl \
 	libcurl-devel \
-	libicu \
 	libicu-devel \
-	libidn \
 	libidn-devel \
-	libjpeg \
 	libjpeg-devel \
-	libjpeg-turbo \
 	libjpeg-turbo-devel \
-	libmcrypt \
 	libmcrypt-devel \
-	libnghttp2 \
 	libnghttp2-devel \
-	libpng \
 	libpng-devel \
-	libsodium \
 	libsodium-devel \
-	libtidy \
 	libtidy-devel \
-	libwebp \
 	libwebp-devel \
-	libxml2 \
 	libxml2-devel \
-	libxslt \
 	libxslt-devel \
-	mhash \
 	mhash-devel \
 	net-snmp-devel \
 	openssl-devel \
-	pcre \
 	pcre-devel \
 	readline-devel \
 	sqlite-devel \
@@ -226,8 +208,8 @@ RUN sed -i 's@^max_execution_time.*@max_execution_time = 120@' ${PHP_DIR}/etc/ph
 RUN sed -i 's@^;realpath_cache_size.*@realpath_cache_size = 2M@' ${PHP_DIR}/etc/php.ini
 RUN sed -i 's@^disable_functions.*@disable_functions = system,chroot,chgrp,chown,shell_exec,ini_alter,ini_restore,dl,readlink,symlink,popepassthru,stream_socket_server@' ${PHP_DIR}/etc/php.ini
 RUN sed -i 's@^;sendmail_path.*@sendmail_path = /usr/sbin/sendmail -t -i@' ${PHP_DIR}/etc/php.ini
-RUN sed -i "s@^;curl.cainfo.*@curl.cainfo = ${OPENSSL_DIR}/cert.pem@" ${PHP_DIR}/etc/php.ini
-RUN sed -i "s@^;openssl.cafile.*@openssl.cafile = ${OPENSSL_DIR}/cert.pem@" ${PHP_DIR}/etc/php.ini
+RUN sed -i "s@^;curl.cainfo.*@curl.cainfo = ${PHP_ETC_DIR}/cert.pem@" ${PHP_DIR}/etc/php.ini
+RUN sed -i "s@^;openssl.cafile.*@openssl.cafile = ${PHP_ETC_DIR}/cert.pem@" ${PHP_DIR}/etc/php.ini
 RUN sed -i "s@^error_reporting =.*@error_reporting = E_ALL@" ${PHP_DIR}/etc/php.ini
 RUN sed -i "s@^log_errors =.*@log_errors = On@" ${PHP_DIR}/etc/php.ini
 RUN sed -i "s@^;error_log = php_errors.log.*@error_log = ${PHP_LOG_DIR}/php_errors.log@" ${PHP_DIR}/etc/php.ini
@@ -241,6 +223,7 @@ RUN sed -i "s@^user =.*@user = ${WWW_USER}@" ${PHP_DIR}/etc/php-fpm.conf
 RUN sed -i "s@^group =.*@group = ${WWW_USER}@" ${PHP_DIR}/etc/php-fpm.conf
 
 RUN pushd ${SRC_DIR} && rm -rf php-${PHP_VER}
+RUN /bin/cp cacert.pem ${PHP_ETC_DIR}/cert.pem
 RUN /bin/cp opcache.ini ${PHP_INI_DIR}/opcache.ini
 RUN sed -i "s@^opcache.memory_consumption.*@opcache.memory_consumption=${MEMORY_LIMIT}@" ${PHP_INI_DIR}/opcache.ini
 
@@ -316,18 +299,6 @@ RUN tar xzf imagick-${PHPIMAGICK_VER}.tgz \
   && popd \
   && rm -rf imagick-${PHPIMAGICK_VER}
 
-# install xhprof
-# wget https://github.com/longxinH/xhprof/archive/v${PHPXHPROF_VER}.tar.gz -O xhprof-${PHPXHPROF_VER}.tar.gz
-RUN tar xzf xhprof-${PHPXHPROF_VER}.tar.gz \
-  && pushd xhprof-${PHPXHPROF_VER}/extension \
-  && ${PHP_DIR}/bin/phpize \
-  && ./configure --with-php-config=${PHP_DIR}/bin/php-config \
-  && make clean \
-  && make && make install \
-  && echo "extension=xhprof.so" > ${PHP_INI_DIR}/xhprof.ini \
-  && popd \
-  && rm -rf xhprof-${PHPXHPROF_VER}
-
 # show modules
 RUN echo $PATH && echo "php modules:" && ${PHP_DIR}/bin/php -m
 
@@ -346,7 +317,6 @@ WORKDIR ${WWW_DIR}
 
 # volume
 VOLUME ${PHP_ETC_DIR}
-VOLUME ${PHP_DIR}/var
 
 ENV PATH "$PATH:${PHP_DIR}/bin"
 RUN echo $PATH
