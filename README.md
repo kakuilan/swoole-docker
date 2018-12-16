@@ -1,6 +1,6 @@
-# ksd-phpcli
-k`s SwooleDistributed swoole php-cli docker image   
-php的swoole镜像
+# swoole-docker
+k`s SwooleDistributed php7 swoole docker image   
+php的swoole镜像,696MB
 
 
 #### 本镜像的系统和包
@@ -32,7 +32,7 @@ php的swoole镜像
 #### 使用方法
 ```shell
 #创建镜像
-git clone https://github.com/kakuilan/ksd-phpcli.git
+git clone https://github.com/kakuilan/swoole-docker.git
 cd ksd-phpcli/
 sudo docker build -t myimg .
 ```
