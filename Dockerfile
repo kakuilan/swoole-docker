@@ -22,6 +22,7 @@ ENV SRC_DIR=/usr/local/src \
     PHPIMAGICK_VER=3.4.3 \
     PHPINOTIFY_VER=2.0.0
 
+# make dir,add user
 RUN mkdir -p ${SRC_DIR} ${WWW_DIR} \
   && useradd -M -s /sbin/nologin ${WWW_USER}
 
@@ -34,7 +35,6 @@ RUN yum install -y epel-release \
 
 # install tools
   && yum install -y \
-	epel-release \
 	net-tools \
 	wget \
 	gcc \
@@ -74,10 +74,10 @@ RUN yum install -y epel-release \
 	unixODBC-devel \
 	zlib-devel \
   && yum clean all \
-  && rm /var/log/*
+  && rm /var/log/* \
 
 # begin install
-RUN pushd ${SRC_DIR} \
+  && pushd ${SRC_DIR} \
   && mkdir -p ${PHP_LOG_DIR} \
   && chmod -R a+rw ${PHP_LOG_DIR} \
 
@@ -119,7 +119,7 @@ RUN pushd ${SRC_DIR} \
   && wget http://hk1.php.net/get/php-${PHP_VER}.tar.gz/from/this/mirror -O php-${PHP_VER}.tar.gz \
   && tar xzf php-${PHP_VER}.tar.gz \
   && pushd php-${PHP_VER} \
-  && ./buildconf --force\
+  && ./buildconf --force \
   && ./configure \
 	--prefix=${PHP_DIR} \
 	--with-config-file-path=${PHP_ETC_DIR} \
@@ -187,10 +187,10 @@ RUN pushd ${SRC_DIR} \
 
 # php path and conf
   && mkdir -p ${PHP_INI_DIR} \
-  && /bin/cp ${SRC_DIR}/php-${PHP_VER}/php.ini-production ${PHP_DIR}/etc/php.ini \
-  && /bin/cp ${SRC_DIR}/cacert.pem ${PHP_ETC_DIR}/cert.pem \
-  && /bin/cp ${SRC_DIR}/opcache.ini ${PHP_INI_DIR}/opcache.ini \
-  && /bin/cp ${SRC_DIR}/php-fpm.conf ${PHP_ETC_DIR}/php-fpm.conf \
+  && /bin/mv ${SRC_DIR}/php-${PHP_VER}/php.ini-production ${PHP_DIR}/etc/php.ini \
+  && /bin/mv ${SRC_DIR}/cacert.pem ${PHP_ETC_DIR}/cert.pem \
+  && /bin/mv ${SRC_DIR}/opcache.ini ${PHP_INI_DIR}/opcache.ini \
+  && /bin/mv ${SRC_DIR}/php-fpm.conf ${PHP_ETC_DIR}/php-fpm.conf \
   && pushd ${SRC_DIR} && rm -rf php-${PHP_VER}* \
   && sed -i "s@^export PATH=\(.*\)@export PATH=${PHP_DIR}/bin:\1@" /etc/profile \
   && . /etc/profile \
@@ -298,12 +298,11 @@ RUN pushd ${SRC_DIR} \
   && rm -rf imagick-${PHPIMAGICK_VER}* \
 
 # clear cache
-  && yum remove -y wget gcc gcc-c++ make cmake autoconf \
+  && yum remove -y epel-release wget gcc gcc-c++ make cmake autoconf \
   && package-cleanup --quiet --leaves --exclude-bin | xargs yum remove -y \
   && yum clean all \
-  && rm -rf /var/cache/yum/* \
-  && rm -rf /var/tmp/yum-* \
   && rm -rf ${SRC_DIR}/* \
+  && rm -rf /var/cache/yum/* \
   && rm -rf /run/log/journal/* \
   && rm -rf /tmp/sess_* \
   && rm -rf /tmp/systemd-private-* \
@@ -326,6 +325,7 @@ RUN pushd ${SRC_DIR} \
   && rm -rf /var/log/wtmp* \
   && rm -rf /var/tmp/systemd-private* \
   && rm -rf /var/tmp/yum* \
+  && rm -rf /usr/share/man/* \
   && history -c && history -w
 
 # www work dir

@@ -3,7 +3,7 @@ k`s SwooleDistributed swoole php-cli docker image
 php的swoole镜像
 
 
-#### 镜像的系统和包
+#### 本镜像的系统和包
 - centos7
 - php 7.2.13
 - swoole 4.2.9
@@ -15,6 +15,27 @@ php的swoole镜像
 - php-redis 4.2.0
 - php-imagick 3.4.3
 - php-inotify 2.0.0
+
+#### php相关路径
+- php目录 /usr/local/php/
+- cli文件 /usr/local/php/bin/php
+- fpm文件 /usr/local/php/sbin/php-fpm
+- 配置目录 /usr/local/php/etc/
+- 扩展配置目录 /usr/local/php/etc/php.d/
+- php配置文件 /usr/local/php/etc/php.ini
+- fpm配置文件 /usr/local/php/etc/php-fpm.conf
+- 日志目录 /var/log/php
+- php日志 /var/log/php/php_errors.log
+- fpm日志 /var/log/php/php-fpm.log
+
+
+#### 使用方法
+```shell
+#创建镜像
+git clone https://github.com/kakuilan/ksd-phpcli.git
+cd ksd-phpcli/
+sudo docker build -t myimg .
+```
 
 #### php所含的扩展
 - bcmath
@@ -83,23 +104,3 @@ php的swoole镜像
 - zip 1.15.4
 - zlib 1.2.7
 
-#### php相关路径
-- php目录 /usr/local/php/
-- cli文件 /usr/local/php/bin/php
-- fpm文件 /usr/local/php/sbin/php-fpm
-- 配置目录 /usr/local/php/etc/
-- 扩展配置目录 /usr/local/php/etc/php.d/
-- php配置文件 /usr/local/php/etc/php.ini
-- fpm配置文件 /usr/local/php/etc/php-fpm.conf
-- 日志目录 /var/log/php
-- php日志 /var/log/php/php_errors.log
-- fpm日志 /var/log/php/php-fpm.log
-
-
-#### 使用方法
-```shell
-#创建镜像
-git clone https://github.com/kakuilan/ksd-phpcli.git
-cd ksd-phpcli/
-sudo docker build -t myimg .
-```
