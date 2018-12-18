@@ -216,7 +216,7 @@ RUN yum install -y epel-release \
   && sed -i "s@^;error_log = php_errors.log.*@error_log = ${PHP_LOG_DIR}/php_errors.log@" ${PHP_DIR}/etc/php.ini \
 
 # php-fpm conf
-  && sed -i "s@^error_log =*@error_log = ${PHP_LOG_DIR}/php-fpm.log@" ${PHP_DIR}/etc/php-fpm.conf \
+  && sed -i "s@^error_log =.*@error_log = ${PHP_LOG_DIR}/php-fpm.log@" ${PHP_DIR}/etc/php-fpm.conf \
   && sed -i "s@^listen.owner.*@listen.owner = ${WWW_USER}@" ${PHP_DIR}/etc/php-fpm.conf \
   && sed -i "s@^listen.group.*@listen.group = ${WWW_USER}@" ${PHP_DIR}/etc/php-fpm.conf \
   && sed -i "s@^user =.*@user = ${WWW_USER}@" ${PHP_DIR}/etc/php-fpm.conf \
