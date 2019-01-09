@@ -307,9 +307,7 @@ RUN yum install -y epel-release \
   && rm -rf /tmp/sess_* \
   && rm -rf /tmp/systemd-private-* \
   && rm -rf /tmp/yum_save* \
-  && rm -rf /var/cache/yum/* \
   && rm -rf /var/log/anaconda* \
-  && rm -rf /var/log/anaconda/* \
   && rm -rf /var/log/audit* \
   && rm -rf /var/log/boot.log* \
   && rm -rf /var/log/btmp* \
