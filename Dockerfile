@@ -299,7 +299,7 @@ RUN yum install -y epel-release \
 
 # clear cache
   && yum remove -y epel-release wget gcc gcc-c++ make cmake autoconf \
-  && package-cleanup --quiet --leaves --exclude-bin | xargs yum remove -y \
+  && set -o pipefail && package-cleanup --quiet --leaves --exclude-bin | xargs yum remove -y \
   && yum clean all \
   && rm -rf ${SRC_DIR}/* \
   && rm -rf /var/cache/yum/* \
