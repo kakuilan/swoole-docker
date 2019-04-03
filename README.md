@@ -39,9 +39,9 @@ cd ksd-phpcli/
 sudo docker build -t myimg .
 
 #拉取网络镜像
-sudo docker pull kakuilan/swoole-docker:lastest
-sudo docker run --rm -it kakuilan/swoole-docker:lastest php -v
-sudo docker run --rm -it kakuilan/swoole-docker:lastest php --ri swoole
+sudo docker pull kakuilan/swoole-docker:latest
+sudo docker run --rm -it kakuilan/swoole-docker:latest php -v
+sudo docker run --rm -it kakuilan/swoole-docker:latest php --ri swoole
 
 #php别名
 echo "alias mphp='docker run --rm -it kakuilan/swoole-docker:0.0.1 php'" >> ~/.bashrc
