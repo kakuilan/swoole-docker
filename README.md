@@ -1,20 +1,22 @@
 # swoole-docker
 k`s SwooleDistributed php7 swoole docker image   
-php的swoole镜像,696MB
+php的swoole镜像
 
 
 #### 本镜像的系统和包
 - centos7
-- php 7.2.13
+- php 7.2.16
 - swoole 4.2.9
 - re2c 1.1.1
 - libiconv 1.15
 - hiredis 0.14.0
-- php-ds 1.2.7
-- php-mcrypt 1.0.1
-- php-redis 4.2.0
+- php-ds 1.2.8
+- php-mcrypt 1.0.2
+- php-redis 4.3.0
 - php-imagick 3.4.3
 - php-inotify 2.0.0
+
+***注意：SwooleDistributed最高仅支持到swoole 4.2.9***
 
 #### php相关路径
 - php目录 /usr/local/php/
@@ -31,10 +33,20 @@ php的swoole镜像,696MB
 
 #### 使用方法
 ```shell
-#创建镜像
+#创建本地镜像
 git clone https://github.com/kakuilan/swoole-docker.git
 cd ksd-phpcli/
 sudo docker build -t myimg .
+
+#拉取网络镜像
+sudo docker pull kakuilan/swoole-docker:lastest
+sudo docker run --rm -it kakuilan/swoole-docker:lastest php -v
+sudo docker run --rm -it kakuilan/swoole-docker:lastest php --ri swoole
+
+#php别名
+echo "alias mphp='docker run --rm -it kakuilan/swoole-docker:0.0.1 php'" >> ~/.bashrc
+source ~/.bashrc
+mphp -v
 ```
 
 #### php所含的扩展
