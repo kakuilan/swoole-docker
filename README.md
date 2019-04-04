@@ -29,6 +29,7 @@ php的swoole镜像
 - 日志目录 /var/log/php
 - php日志 /var/log/php/php_errors.log
 - fpm日志 /var/log/php/php-fpm.log
+- composer /usr/local/bin/composer
 
 
 #### 使用方法
@@ -42,11 +43,14 @@ sudo docker build -t myimg .
 sudo docker pull kakuilan/swoole-docker:latest
 sudo docker run --rm -it kakuilan/swoole-docker:latest php -v
 sudo docker run --rm -it kakuilan/swoole-docker:latest php --ri swoole
+sudo docker run --rm -it kakuilan/swoole-docker:latest composer --version
 
 #php别名
-echo "alias mphp='docker run --rm -it kakuilan/swoole-docker:0.0.1 php'" >> ~/.bashrc
-source ~/.bashrc
-mphp -v
+echo "alias php='docker run --rm -it kakuilan/swoole-docker:latest php'" >> /etc/profile
+echo "alias composer='docker run --rm -it kakuilan/swoole-docker:latest composer'" >> /etc/profile
+source /etc/profile
+php -v
+composer --version
 ```
 
 #### php所含的扩展

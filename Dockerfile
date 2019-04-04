@@ -297,6 +297,13 @@ RUN yum install -y epel-release \
   && popd \
   && rm -rf imagick-${PHPIMAGICK_VER}* \
 
+# install composer
+  && ln -sf ${PHP_DIR}/bin/php /usr/local/bin/php \
+  && wget https://getcomposer.org/installer -O installer.php \
+  && php installer.php --no-ansi --install-dir=/usr/local/bin --filename=composer \
+  && chmod +x /usr/local/bin/composer \
+  && rm -f installer.php \
+
 # clear cache
   && yum remove -y epel-release wget gcc gcc-c++ make cmake autoconf \
   && set -o pipefail && package-cleanup --quiet --leaves --exclude-bin | xargs yum remove -y \
