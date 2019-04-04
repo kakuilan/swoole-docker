@@ -44,13 +44,16 @@ sudo docker pull kakuilan/swoole-docker:latest
 sudo docker run --rm -it kakuilan/swoole-docker:latest php -v
 sudo docker run --rm -it kakuilan/swoole-docker:latest php --ri swoole
 sudo docker run --rm -it kakuilan/swoole-docker:latest composer --version
+sudo docker run --rm -it kakuilan/swoole-docker:latest phpunit --version
 
-#php别名
+#php、composer和phpunit别名
 echo "alias php='docker run --rm -it kakuilan/swoole-docker:latest php'" >> /etc/profile
 echo "alias composer='docker run --rm -it kakuilan/swoole-docker:latest composer'" >> /etc/profile
+echo "alias phpunit='docker run --rm -it kakuilan/swoole-docker:latest phpunit'" >> /etc/profile
 source /etc/profile
 php -v
 composer --version
+phpunit --version
 ```
 
 #### php所含的扩展
@@ -62,8 +65,8 @@ composer --version
 - date
 - dba
 - dom
-- ds 1.2.7
-- exif 7.2.13
+- ds 1.2.8
+- exif 7.2.16
 - fileinfo 1.0.5
 - filter
 - ftp
@@ -92,7 +95,7 @@ composer --version
 - Phar 2.0.2
 - posix
 - readline 6.2
-- redis 4.2.0
+- redis 4.3.0
 - Reflection
 - session
 - shmop

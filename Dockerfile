@@ -187,13 +187,12 @@ RUN yum install -y epel-release \
 
 # php path and conf
   && mkdir -p ${PHP_INI_DIR} \
+  && ln -sf ${PHP_DIR}/bin/php /usr/local/bin/php \
   && /bin/mv ${SRC_DIR}/php-${PHP_VER}/php.ini-production ${PHP_DIR}/etc/php.ini \
   && /bin/mv ${SRC_DIR}/cacert.pem ${PHP_ETC_DIR}/cert.pem \
   && /bin/mv ${SRC_DIR}/opcache.ini ${PHP_INI_DIR}/opcache.ini \
   && /bin/mv ${SRC_DIR}/php-fpm.conf ${PHP_ETC_DIR}/php-fpm.conf \
   && pushd ${SRC_DIR} && rm -rf php-${PHP_VER}* \
-  && sed -i "s@^export PATH=\(.*\)@export PATH=${PHP_DIR}/bin:\1@" /etc/profile \
-  && . /etc/profile \
 
 # modify php.ini
   && sed -i "s@^memory_limit.*@memory_limit = ${MEMORY_LIMIT}M@" ${PHP_DIR}/etc/php.ini \
@@ -298,11 +297,14 @@ RUN yum install -y epel-release \
   && rm -rf imagick-${PHPIMAGICK_VER}* \
 
 # install composer
-  && ln -sf ${PHP_DIR}/bin/php /usr/local/bin/php \
   && wget https://getcomposer.org/installer -O installer.php \
-  && php installer.php --no-ansi --install-dir=/usr/local/bin --filename=composer \
+  && ${PHP_DIR}/bin/php installer.php --no-ansi --install-dir=/usr/local/bin --filename=composer \
   && chmod +x /usr/local/bin/composer \
   && rm -f installer.php \
+
+# install phpunit
+  && wget phpunit https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit \
+  && chmod +x /usr/local/bin/phpunit \
 
 # clear cache
   && yum remove -y epel-release wget gcc gcc-c++ make cmake autoconf \
