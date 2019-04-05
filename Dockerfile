@@ -303,7 +303,7 @@ RUN yum install -y epel-release \
   && rm -f installer.php \
 
 # install phpunit
-  && wget phpunit https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit \
+  && wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit \
   && chmod +x /usr/local/bin/phpunit \
 
 # clear cache
