@@ -36,6 +36,7 @@ RUN yum install -y epel-release \
 # install tools
   && yum install -y \
 	net-tools \
+	telnet \
 	wget \
 	gcc \
 	gcc-c++ \
