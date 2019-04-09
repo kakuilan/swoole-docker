@@ -46,14 +46,14 @@ sudo docker run --rm -it kakuilan/swoole-docker:latest php --ri swoole
 sudo docker run --rm -it kakuilan/swoole-docker:latest composer --version
 sudo docker run --rm -it kakuilan/swoole-docker:latest phpunit --version
 
-#php、composer和phpunit别名
+#php、phpunit和composer别名
 echo "alias php='docker run --rm -it kakuilan/swoole-docker:latest php'" >> /etc/profile
-echo "alias composer='docker run --rm -it kakuilan/swoole-docker:latest composer'" >> /etc/profile
-echo "alias phpunit='docker run --rm -it kakuilan/swoole-docker:latest phpunit'" >> /etc/profile
+echo "alias phpunit='docker run --rm -it --volume $PWD:/var/www kakuilan/swoole-docker:latest phpunit'" >> /etc/profile
+echo "alias composer='docker run --rm -it --volume $PWD:/var/www kakuilan/swoole-docker:latest composer'" >> /etc/profile
 source /etc/profile
 php -v
-composer --version
 phpunit --version
+composer --version
 ```
 
 #### php所含的扩展
