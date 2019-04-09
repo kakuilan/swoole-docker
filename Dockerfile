@@ -20,7 +20,9 @@ ENV SRC_DIR=/usr/local/src \
     PHPMCRYPT_VER=1.0.2 \
     PHPREDIS_VER=4.3.0 \
     PHPIMAGICK_VER=3.4.3 \
-    PHPINOTIFY_VER=2.0.0
+    PHPINOTIFY_VER=2.0.0 \
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_HOME=/tmp
 
 # make dir,add user
 RUN mkdir -p ${SRC_DIR} ${WWW_DIR} \
