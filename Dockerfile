@@ -3,7 +3,10 @@ FROM centos:centos7
 MAINTAINER kakuilan kakuilan@163.com
 
 # dir and version
-ENV SRC_DIR=/usr/local/src \
+ENV TZ=Asia/Shanghai \
+    LANG=en_US.UTF-8 \
+    LC_COLLATE=en_US.UTF-8 \
+    SRC_DIR=/usr/local/src \
     WWW_DIR=/var/www \
     WWW_USER=www \
     MEMORY_LIMIT=512 \
@@ -308,6 +311,22 @@ RUN yum install -y epel-release \
 # install phpunit
   && wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit \
   && chmod +x /usr/local/bin/phpunit \
+
+# change time zone
+  && rm /etc/localtime \
+  && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
+
+# change locale
+  && pushd /usr/lib/locale \
+  && mv locale-archive locale-archive.old \
+  && localedef -i en_US -f UTF-8 en_US.UTF-8 \
+  && localedef -i zh_CN -f UTF-8 zh_CN.UTF-8 \
+  && localedef -i zh_CN -f GB2312 zh_CN \
+  && localedef -i zh_CN -f GB2312 zh_CN.GB2312 \
+  && localedef -i zh_CN -f GBK zh_CN.GBK \
+  && rm locale-archive.old \
+  && popd \
+  && echo -en 'LC_COLLATE="en_US.UTF-8"' >> /etc/locale.conf \
 
 # clear cache
   && yum remove -y epel-release wget gcc gcc-c++ make cmake autoconf \
