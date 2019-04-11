@@ -310,7 +310,13 @@ RUN yum install -y epel-release \
   && wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit \
   && chmod +x /usr/local/bin/phpunit \
 
-# change time zone
+# del time zone
+  && pushd /usr/share/zoneinfo \
+  && set -o pipefail && ls | egrep -v "Asia|UTC" | xargs rm -rf \
+  && popd \
+  && pushd /usr/share/zoneinfo/Asia \
+  && set -o pipefail && ls | egrep -v "Shanghai|Hong_Kong" | xargs rm -f \
+  && popd \
   && rm /etc/localtime \
   && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
 
@@ -338,8 +344,13 @@ RUN yum install -y epel-release \
   && rm -rf /var/log/tallylog* \
   && rm -rf /var/log/tuned/* \
   && rm -rf /var/log/wtmp* \
+  && set -o pipefail && find / -name "*.log" | xargs rm -f \
   && rm -rf /var/tmp/systemd-private* \
   && rm -rf /var/tmp/yum* \
+  && rm -rf /usr/local/share/man/* \
+  && rm -rf /usr/local/share/doc/* \
+  && rm -rf /usr/share/doc/* \
+  && rm -rf /usr/share/licenses/* \
   && rm -rf /usr/share/man/* \
   && history -c && history -w
 
