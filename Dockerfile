@@ -3,8 +3,7 @@ FROM centos:centos7
 MAINTAINER kakuilan kakuilan@163.com
 
 # dir and version
-ENV TZ=Asia/Shanghai \
-    SRC_DIR=/usr/local/src \
+ENV SRC_DIR=/usr/local/src \
     WWW_DIR=/var/www \
     WWW_USER=www \
     MEMORY_LIMIT=512 \
@@ -310,18 +309,9 @@ RUN yum install -y epel-release \
   && wget https://phar.phpunit.de/phpunit-8.phar -O /usr/local/bin/phpunit \
   && chmod +x /usr/local/bin/phpunit \
 
-# del time zone
-  && pushd /usr/share/zoneinfo \
-  && set -o pipefail && ls | egrep -v "Asia|UTC" | xargs rm -rf \
-  && popd \
-  && pushd /usr/share/zoneinfo/Asia \
-  && set -o pipefail && ls | egrep -v "Shanghai|Hong_Kong" | xargs rm -f \
-  && popd \
-  && rm /etc/localtime \
-  && ln -sf /usr/share/zoneinfo/$TZ /etc/localtime \
-
 # clear cache
   && yum remove -y epel-release wget gcc gcc-c++ make cmake autoconf \
+  && set -o pipefail && find / -name "*.log" | xargs rm -f \
   && set -o pipefail && package-cleanup --quiet --leaves --exclude-bin | xargs yum remove -y \
   && yum clean all \
   && rm -rf ${SRC_DIR}/* \
@@ -344,7 +334,6 @@ RUN yum install -y epel-release \
   && rm -rf /var/log/tallylog* \
   && rm -rf /var/log/tuned/* \
   && rm -rf /var/log/wtmp* \
-  && set -o pipefail && find / -name "*.log" | xargs rm -f \
   && rm -rf /var/tmp/systemd-private* \
   && rm -rf /var/tmp/yum* \
   && rm -rf /usr/local/share/man/* \
