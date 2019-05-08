@@ -105,7 +105,7 @@ composer --version
 - SPL
 - sqlite3 7.2.13
 - standard
-- swoole 4.2.9
+- swoole 4.3.3
 - sysvmsg
 - sysvsem
 - sysvshm
