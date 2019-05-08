@@ -5,8 +5,8 @@ php的swoole镜像
 
 #### 本镜像的系统和包
 - centos7
-- php 7.2.16
-- swoole 4.2.9
+- php 7.2.18
+- swoole 4.3.3
 - re2c 1.1.1
 - libiconv 1.15
 - hiredis 0.14.0
@@ -15,8 +15,6 @@ php的swoole镜像
 - php-redis 4.3.0
 - php-imagick 3.4.3
 - php-inotify 2.0.0
-
-***注意：SwooleDistributed最高仅支持到swoole 4.2.9***
 
 #### php相关路径
 - php目录 /usr/local/php/
