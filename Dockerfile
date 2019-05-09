@@ -8,8 +8,7 @@ ENV SRC_DIR=/usr/local/src \
     WWW_USER=www \
     MEMORY_LIMIT=512 \
     RE2C_VER=1.1.1 \
-    LIBICONV_VER=1.15 \
-    HIREDIS_VER=0.14.0 \
+    LIBICONV_VER=1.16 \
     PHP_VER=7.2.18 \
     PHP_DIR=/usr/local/php \
     PHP_LOG_DIR=/var/log/php \
@@ -19,7 +18,7 @@ ENV SRC_DIR=/usr/local/src \
     PHPDS_VER=1.2.8 \
     PHPMCRYPT_VER=1.0.2 \
     PHPREDIS_VER=4.3.0 \
-    PHPIMAGICK_VER=3.4.3 \
+    PHPIMAGICK_VER=3.4.4 \
     PHPINOTIFY_VER=2.0.0 \
     COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/tmp
@@ -61,7 +60,6 @@ RUN yum install -y epel-release \
 	libjpeg-devel \
 	libjpeg-turbo-devel \
 	libmcrypt-devel \
-	libnghttp2-devel \
 	libpng-devel \
 	libsodium-devel \
 	libtidy-devel \
@@ -93,15 +91,6 @@ RUN yum install -y epel-release \
   && make && make install \
   && popd \
   && rm -rf re2c-${RE2C_VER}* \
-
-# install hiredis
-  && wget https://github.com/redis/hiredis/archive/v${HIREDIS_VER}.tar.gz -O hiredis-${HIREDIS_VER}.tar.gz \
-  && tar xzf hiredis-${HIREDIS_VER}.tar.gz \
-  && pushd hiredis-${HIREDIS_VER} \
-  && make clean \
-  && make -j && make install \
-  && popd \
-  && rm -rf hiredis-${HIREDIS_VER}* \
 
 # install libiconv
   && wget https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VER}.tar.gz \
@@ -232,7 +221,7 @@ RUN yum install -y epel-release \
   && tar xzf swoole-${SWOOLE_VER}.tgz \
   && pushd swoole-${SWOOLE_VER} \
   && ${PHP_DIR}/bin/phpize \
-  && ./configure --enable-openssl --enable-http2 --with-php-config=${PHP_DIR}/bin/php-config \
+  && ./configure --enable-openssl --enable-http2 --enable-sockets --enable-mysqlnd --with-php-config=${PHP_DIR}/bin/php-config \
   && make clean \
   && make -j && make install \
   && echo "extension=swoole.so" > ${PHP_INI_DIR}/swoole.ini \
