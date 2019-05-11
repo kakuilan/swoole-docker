@@ -8,13 +8,14 @@ php的swoole镜像
 - php 7.2.18
 - swoole 4.3.3
 - re2c 1.1.1
-- libiconv 1.15
-- hiredis 0.14.0
+- libiconv 1.16
 - php-ds 1.2.8
-- php-mcrypt 1.0.2
-- php-redis 4.3.0
-- php-imagick 3.4.3
+- php-imagick 3.4.4
 - php-inotify 2.0.0
+- php-mcrypt 1.0.2
+- php-msgpack 2.0.3
+- php-redis 4.3.0
+- php-xhprof 2.1.0
 
 #### php相关路径
 - php目录 /usr/local/php/
@@ -34,7 +35,7 @@ php的swoole镜像
 ```shell
 #创建本地镜像
 git clone https://github.com/kakuilan/swoole-docker.git
-cd ksd-phpcli/
+cd swoole-docker/
 sudo docker build -t myimg .
 
 #拉取网络镜像
@@ -55,6 +56,13 @@ composer --version
 ```
 
 #### php所含的扩展
+- PDO
+- PDO_ODBC
+- Phar 2.0.2
+- Reflection
+- SPL
+- SimpleXML
+- Zend OPcache
 - bcmath
 - bz2 1.0.6
 - calendar
@@ -80,29 +88,24 @@ composer --version
 - libxml 2.9.1
 - mbstring
 - mcrypt 2.5.8
+- msgpack 2.0.3
 - mysqli
 - mysqlnd
 - odbc
 - openssl 1.0.2k
 - pcntl
 - pcre 8.41
-- PDO
 - pdo_mysql
-- PDO_ODBC
 - pdo_sqlite 3.20.1
-- Phar 2.0.2
 - posix
 - readline 6.2
 - redis 4.3.0
-- Reflection
 - session
 - shmop
-- SimpleXML
 - snmp 5.7.2
 - soap
 - sockets
 - sodium 1.0.16
-- SPL
 - sqlite3 7.2.13
 - standard
 - swoole 4.3.3
@@ -112,12 +115,12 @@ composer --version
 - tidy 5.4.0
 - tokenizer
 - wddx
+- xhprof 2.1.0
 - xml 2.9.1
 - xmlreader
 - xmlrpc
 - xmlwriter
 - xsl 1.1.28
-- Zend OPcache
 - zip 1.15.4
 - zlib 1.2.7
 

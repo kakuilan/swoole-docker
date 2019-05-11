@@ -20,7 +20,8 @@ ENV SRC_DIR=/usr/local/src \
     PHPREDIS_VER=4.3.0 \
     PHPIMAGICK_VER=3.4.4 \
     PHPINOTIFY_VER=2.0.0 \
-    COMPOSER_ALLOW_SUPERUSER=1 \
+    PHPMSGPACK_VER=2.0.3 \
+    XHPROF_VER=2.1.0 \
     COMPOSER_HOME=/tmp
 
 # make dir,add user
@@ -288,10 +289,34 @@ RUN yum install -y epel-release \
   && popd \
   && rm -rf imagick-${PHPIMAGICK_VER}* \
 
+# install msgpack
+  && wget http://pecl.php.net/get/msgpack-${PHPMSGPACK_VER}.tgz \
+  && tar xzf msgpack-${PHPMSGPACK_VER}.tgz \
+  && pushd msgpack-${PHPMSGPACK_VER} \
+  && ${PHP_DIR}/bin/phpize \
+  && ./configure --with-php-config=${PHP_DIR}/bin/php-config \
+  && make clean \
+  && make && make install \
+  && echo "extension=msgpack.so" > ${PHP_INI_DIR}/msgpack.ini \
+  && popd \
+  && rm -rf msgpack-${PHPMSGPACK_VER}* \
+
+# install xhprof
+  && wget https://github.com/longxinH/xhprof/archive/v${XHPROF_VER}.tar.gz -O xhprof.${XHPROF_VER}.tar.gz \
+  && tar xzf xhprof.${XHPROF_VER}.tar.gz \
+  && pushd xhprof-${XHPROF_VER}/extension \
+  && ${PHP_DIR}/bin/phpize \
+  && ./configure --with-php-config=${PHP_DIR}/bin/php-config \
+  && make clean \
+  && make && make install \
+  && echo "extension=xhprof.so" > ${PHP_INI_DIR}/xhprof.ini \
+  && popd \
+  && rm -rf xhprof-${XHPROF_VER}* \
+
 # install composer
   && wget https://getcomposer.org/installer -O installer.php \
   && ${PHP_DIR}/bin/php installer.php --no-ansi --install-dir=/usr/local/bin --filename=composer \
-  && chmod +x /usr/local/bin/composer \
+  && chmod +x /usr/local/bin/composer && composer self-update --clean-backups \
   && rm -f installer.php \
 
 # install phpunit
