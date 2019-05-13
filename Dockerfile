@@ -309,7 +309,7 @@ RUN yum install -y epel-release \
   && ./configure --with-php-config=${PHP_DIR}/bin/php-config \
   && make clean \
   && make && make install \
-  && echo "extension=xhprof.so" > ${PHP_INI_DIR}/xhprof.ini \
+  && echo ";extension=xhprof.so" > ${PHP_INI_DIR}/xhprof.ini \
   && popd \
   && rm -rf xhprof-${XHPROF_VER}* \
 
