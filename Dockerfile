@@ -7,17 +7,17 @@ ENV SRC_DIR=/usr/local/src \
     WWW_DIR=/var/www \
     WWW_USER=www \
     MEMORY_LIMIT=512 \
-    RE2C_VER=1.1.1 \
+    RE2C_VER=1.2.1 \
     LIBICONV_VER=1.16 \
-    PHP_VER=7.2.18 \
+    PHP_VER=7.2.24 \
     PHP_DIR=/usr/local/php \
     PHP_LOG_DIR=/var/log/php \
     PHP_ETC_DIR=/usr/local/php/etc \
     PHP_INI_DIR=/usr/local/php/php.d \
     SWOOLE_VER=4.3.3 \
-    PHPDS_VER=1.2.8 \
-    PHPMCRYPT_VER=1.0.2 \
-    PHPREDIS_VER=4.3.0 \
+    PHPDS_VER=1.2.9 \
+    PHPMCRYPT_VER=1.0.3 \
+    PHPREDIS_VER=5.1.1 \
     PHPIMAGICK_VER=3.4.4 \
     PHPINOTIFY_VER=2.0.0 \
     PHPMSGPACK_VER=2.0.3 \
@@ -84,8 +84,8 @@ RUN yum install -y epel-release \
   && chmod -R a+rw ${PHP_LOG_DIR} \
 
 # install re2c
-  && wget https://github.com/skvadrik/re2c/releases/download/${RE2C_VER}/re2c-${RE2C_VER}.tar.gz -O re2c-${RE2C_VER}.tar.gz \
-  && tar xzf re2c-${RE2C_VER}.tar.gz \
+  && wget https://github.com/skvadrik/re2c/releases/download/${RE2C_VER}/re2c-${RE2C_VER}.tar.xz -O re2c-${RE2C_VER}.tar.xz \
+  && tar -xvJf re2c-${RE2C_VER}.tar.xz \
   && pushd re2c-${RE2C_VER} \
   && ./configure \
   && make clean \

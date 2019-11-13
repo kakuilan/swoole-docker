@@ -5,16 +5,16 @@ php的swoole镜像
 
 #### 本镜像的系统和包
 - centos7
-- php 7.2.18
+- php 7.2.24
 - swoole 4.3.3
-- re2c 1.1.1
+- re2c 1.2.1
 - libiconv 1.16
 - php-ds 1.2.8
 - php-imagick 3.4.4
 - php-inotify 2.0.0
-- php-mcrypt 1.0.2
+- php-mcrypt 1.0.3
 - php-msgpack 2.0.3
-- php-redis 4.3.0
+- php-redis 5.1.1
 - php-xhprof 2.1.0
 
 #### php相关路径
