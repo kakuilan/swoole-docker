@@ -22,7 +22,7 @@ php的swoole镜像
 - cli文件 /usr/local/php/bin/php
 - fpm文件 /usr/local/php/sbin/php-fpm
 - 配置目录 /usr/local/php/etc/
-- 扩展配置目录 /usr/local/php/etc/php.d/
+- 扩展配置目录 /usr/local/php/php.d/
 - php配置文件 /usr/local/php/etc/php.ini
 - fpm配置文件 /usr/local/php/etc/php-fpm.conf
 - 日志目录 /var/log/php
