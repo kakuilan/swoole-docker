@@ -5,9 +5,9 @@ php的swoole镜像
 
 #### 本镜像的系统和包
 - centos7
-- php 7.2.24
+- php 7.2.27
 - swoole 4.3.3
-- re2c 1.2.1
+- re2c 1.3
 - libiconv 1.16
 - php-ds 1.2.8
 - php-imagick 3.4.4
@@ -15,7 +15,7 @@ php的swoole镜像
 - php-mcrypt 1.0.3
 - php-msgpack 2.0.3
 - php-redis 5.1.1
-- php-xhprof 2.1.0
+- php-xhprof 2.1.3
 
 #### php相关路径
 - php目录 /usr/local/php/

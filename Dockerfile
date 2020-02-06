@@ -7,9 +7,9 @@ ENV SRC_DIR=/usr/local/src \
     WWW_DIR=/var/www \
     WWW_USER=www \
     MEMORY_LIMIT=512 \
-    RE2C_VER=1.2.1 \
+    RE2C_VER=1.3 \
     LIBICONV_VER=1.16 \
-    PHP_VER=7.2.24 \
+    PHP_VER=7.2.27 \
     PHP_DIR=/usr/local/php \
     PHP_LOG_DIR=/var/log/php \
     PHP_ETC_DIR=/usr/local/php/etc \
@@ -21,7 +21,7 @@ ENV SRC_DIR=/usr/local/src \
     PHPIMAGICK_VER=3.4.4 \
     PHPINOTIFY_VER=2.0.0 \
     PHPMSGPACK_VER=2.0.3 \
-    XHPROF_VER=2.1.0 \
+    XHPROF_VER=2.1.3 \
     COMPOSER_HOME=/tmp
 
 # make dir,add user
