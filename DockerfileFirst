@@ -16,7 +16,7 @@ ENV SRC_DIR=/usr/local/src \
     PHP_ETC_DIR=/usr/local/php/etc \
     PHP_INI_DIR=/usr/local/php/php.d \
     PHP_LOG_DIR=/var/log/php \
-    SWOOLE_VER=4.2.13 \
+    SWOOLE_VER=4.2.9 \
     PHPDS_VER=1.2.9 \
     PHPMCRYPT_VER=1.0.3 \
     PHPREDIS_VER=5.2.2 \
@@ -39,6 +39,7 @@ RUN yum install -y epel-release \
 
 # install tools
   && yum install -y \
+	bzip2 \
 	net-tools \
 	telnet \
 	wget \

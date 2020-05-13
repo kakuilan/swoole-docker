@@ -6,7 +6,7 @@ php的swoole镜像
 #### 本镜像的系统和包
 - centos7
 - php 7.2.30
-- swoole 4.2.13
+- swoole 4.2.9
 - re2c 1.3
 - libiconv 1.16
 - php-ds 1.2.9
@@ -75,8 +75,8 @@ tar -jcf mylibs.tar.bz2 ./mylibs
 mv mylibs.tar.bz2 /var/www/
 
 #发布镜像
-sudo docker tag myimg:latest kakuilan/swoole-docker:0.0.5
-sudo docker push kakuilan/swoole-docker:0.0.5
+sudo docker tag myimg:latest kakuilan/swoole-docker:0.0.6
+sudo docker push kakuilan/swoole-docker:0.0.6
 
 #### php所含的扩展
 - PDO
