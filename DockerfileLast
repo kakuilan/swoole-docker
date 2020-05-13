@@ -23,8 +23,8 @@ RUN yum install -y \
 	net-tools \
 	tcpdump \
 	telnet \
-	unzip \
 	which \
+	unzip \
 
 # download and uncompress package
     && cd ${SRC_DIR} \

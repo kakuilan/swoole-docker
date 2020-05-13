@@ -5,17 +5,15 @@ php的swoole镜像
 
 #### 本镜像的系统和包
 - centos7
-- php 7.2.27
-- swoole 4.3.3
+- php 7.2.30
+- swoole 4.2.13
 - re2c 1.3
 - libiconv 1.16
-- php-ds 1.2.8
+- php-ds 1.2.9
 - php-imagick 3.4.4
 - php-inotify 2.0.0
 - php-mcrypt 1.0.3
-- php-msgpack 2.0.3
-- php-redis 5.1.1
-- php-xhprof 2.1.3
+- php-redis 5.2.2
 
 #### php相关路径
 - php目录 /usr/local/php/
@@ -54,6 +52,31 @@ php -v
 phpunit --version
 composer --version
 ```
+
+#进入镜像
+docker run --name test -it -v /var/www:/var/www -d 8df301a8a060 php -S localhost:8000
+docker exec -it test /bin/bash
+
+#拷贝库文件
+docker run --name test -it -v /var/www:/var/www -d 8df301a8a060 php -S localhost:8000
+docker exec -it test /bin/bash
+cd /usr/local/src/
+mkdir -p mylibs
+ll -h /usr/lib64 |grep libjbig
+\cp -drf /usr/lib64/libtiff* mylibs/
+\cp -drf /usr/lib64/libfontconfig.* mylibs/
+\cp -drf /usr/lib64/libXext.* mylibs/
+\cp -drf /usr/lib64/libXt.* mylibs/
+\cp -drf /usr/lib64/libSM.* mylibs/
+\cp -drf /usr/lib64/libICE.* mylibs/
+\cp -drf /usr/lib64/libgomp.* mylibs/
+\cp -drf /usr/lib64/libjbig* mylibs/
+tar -jcf mylibs.tar.bz2 ./mylibs
+mv mylibs.tar.bz2 /var/www/
+
+#发布镜像
+sudo docker tag myimg:latest kakuilan/swoole-docker:0.0.5
+sudo docker push kakuilan/swoole-docker:0.0.5
 
 #### php所含的扩展
 - PDO
